@@ -41,4 +41,4 @@ Turn an **IKEA VINDRIKTNING** PM2.5 sensor into a eight-reading Home Assistant a
 
 ---
 
-*Prices checked October 2026. Hosting: push this folder to a GitHub repo and enable **Settings → Pages → Deploy from branch (main, / root)**. The `_config.yml` handles the theme and turns `.md` links into page links automatically.*
+*Prices checked October 2026.*
