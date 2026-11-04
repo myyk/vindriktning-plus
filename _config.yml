@@ -1,0 +1,10 @@
+title: VINDRIKTNING+
+description: IKEA VINDRIKTNING + ESP32-C3 + SCD40 / SHT40 / SGP41 / H2S for Home Assistant
+theme: jekyll-theme-minimal
+plugins:
+  - jekyll-relative-links
+relative_links:
+  enabled: true
+  collections: false
+include:
+  - esphome

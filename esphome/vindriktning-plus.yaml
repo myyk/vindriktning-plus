@@ -1,0 +1,205 @@
+# VINDRIKTNING+  —  IKEA VINDRIKTNING + ESP32-C3 SuperMini
+# PM2.5 (stock PM1006) + CO2 (SCD40) + Temp/RH (SHT40) + VOC/NOx index (SGP41)
+# + H2S / sulfur-odour indicator (DFRobot Fermion MEMS H2S, analog)
+#
+# Based on 3ative's Ikea_v2_esp32_upgrade.yaml (Feb 2026), updated for the
+# sensors in this build. Copy secrets.yaml.example -> secrets.yaml first.
+
+substitutions:
+  name: aq-living-room
+  friendly_name: AQ Living Room
+
+esphome:
+  name: ${name}
+  friendly_name: ${friendly_name}
+
+esp32:
+  board: esp32-c3-devkitm-1
+  framework:
+    type: esp-idf
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  min_auth_mode: WPA2
+  # Many SuperMini boards have a poorly tuned antenna and drop off Wi-Fi at
+  # full power. If yours is flaky, uncomment the next line.
+  # output_power: 8.5dB
+  ap:
+    password: !secret fallback_ap_password
+
+captive_portal:
+
+api:
+  encryption:
+    key: !secret api_key
+
+ota:
+  - platform: esphome
+    encryption:
+      key: !secret ota_key
+
+logger:
+  logs:
+    pm1006: WARN
+    sensor: WARN
+
+# ---------------------------------------------------------------------------
+# Buses
+# ---------------------------------------------------------------------------
+
+# PM1006 inside the VINDRIKTNING. We only *listen*: IKEA's own MCU keeps
+# polling it, so the front LED keeps working. REST pad -> GPIO20.
+uart:
+  - id: pm_uart
+    rx_pin: GPIO20
+    baud_rate: 9600
+
+# One shared I2C bus. Addresses: SHT4x 0x44, SGP4x 0x59, SCD4x 0x62 (no clashes).
+i2c:
+  id: bus_a
+  sda: GPIO6
+  scl: GPIO7
+  scan: true
+  frequency: 100kHz
+
+# ---------------------------------------------------------------------------
+# Sensors
+# ---------------------------------------------------------------------------
+sensor:
+  # PM2.5 from the stock IKEA particle sensor
+  - platform: pm1006
+    uart_id: pm_uart
+    pm_2_5:
+      name: PM2.5
+      filters:
+        - sliding_window_moving_average:
+            window_size: 6
+            send_every: 3
+
+  # SHT40 - primary room temperature & humidity, also feeds SGP41 compensation
+  - platform: sht4x
+    address: 0x44
+    precision: High
+    update_interval: 10s
+    temperature:
+      name: Temperature
+      id: room_temp
+      filters:
+        # The ESP32 and SCD40 warm the case. Measure against a reference
+        # thermometer for a day and set this offset accordingly.
+        - offset: -1.0
+    humidity:
+      name: Humidity
+      id: room_rh
+
+  # SCD40 - real (photoacoustic NDIR) CO2
+  - platform: scd4x
+    address: 0x62
+    update_interval: 30s
+    automatic_self_calibration: true   # needs regular fresh air (~420 ppm)
+    temperature_offset: 4 °C
+    co2:
+      name: CO2
+      id: co2
+    # The SCD40 also reports T/RH. They are noisier because the sensor heats
+    # itself, so they are kept internal and only used as a sanity check.
+    temperature:
+      name: SCD40 Temperature
+      internal: true
+    humidity:
+      name: SCD40 Humidity
+      internal: true
+
+  # SGP41 (or SGP40) - VOC index and NOx index. Same component for both;
+  # with an SGP40 the nox_index entity is simply ignored.
+  - platform: sgp4x
+    update_interval: 30s
+    compensation:
+      temperature_source: room_temp
+      humidity_source: room_rh
+    voc_index:
+      name: VOC Index
+    nox_index:
+      name: NOx Index
+
+  # DFRobot Fermion MEMS H2S (Winsen GM-602B) - analog, *qualitative* only.
+  # Powered from 3.3 V so its output can never exceed what the C3 can take.
+  - platform: adc
+    pin: GPIO3
+    id: h2s_raw
+    name: H2S Sensor Voltage
+    attenuation: 12db
+    update_interval: 5s
+    accuracy_decimals: 3
+    filters:
+      - sliding_window_moving_average:
+          window_size: 12
+          send_every: 6
+
+  # A "relative to clean air" ratio is more useful than raw volts.
+  # Set the baseline once the sensor has burned in for 24-48 h (see firmware.md).
+  - platform: template
+    name: H2S Relative
+    unit_of_measurement: "x"
+    accuracy_decimals: 2
+    update_interval: 30s
+    lambda: |-
+      if (isnan(id(h2s_raw).state) || id(h2s_baseline).state <= 0) return NAN;
+      return id(h2s_raw).state / id(h2s_baseline).state;
+
+  - platform: wifi_signal
+    name: Wi-Fi Signal
+    update_interval: 120s
+    entity_category: diagnostic
+
+# ---------------------------------------------------------------------------
+# Calibration helpers (show up under the device's Configuration section in HA)
+# ---------------------------------------------------------------------------
+number:
+  - platform: template
+    name: CO2 Reference
+    id: co2_ref
+    icon: mdi:molecule-co2
+    entity_category: config
+    optimistic: true
+    restore_value: true
+    initial_value: 420
+    min_value: 400
+    max_value: 2000
+    step: 1
+    unit_of_measurement: ppm
+
+  - platform: template
+    name: H2S Clean-Air Baseline
+    id: h2s_baseline
+    entity_category: config
+    optimistic: true
+    restore_value: true
+    initial_value: 0
+    min_value: 0
+    max_value: 3.3
+    step: 0.001
+    unit_of_measurement: V
+
+button:
+  # Put the unit outdoors / by an open window for 5+ minutes first.
+  - platform: template
+    name: CO2 Force Calibration
+    entity_category: config
+    on_press:
+      - scd4x.perform_forced_calibration:
+          value: !lambda "return id(co2_ref).state;"
+
+  # Press in clean air after burn-in to store the current voltage as baseline.
+  - platform: template
+    name: H2S Set Baseline Now
+    entity_category: config
+    on_press:
+      - number.set:
+          id: h2s_baseline
+          value: !lambda "return id(h2s_raw).state;"
+
+  - platform: restart
+    name: Restart
+    entity_category: diagnostic
