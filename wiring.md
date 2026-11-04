@@ -2,7 +2,7 @@
 title: Wiring
 ---
 
-[← Home](README.md) · [Parts](parts.md) · **Wiring** · [Firmware](firmware.md)
+[← Home](README.md) · [Parts](parts.md) · [Testing](testing.md) · **Wiring** · [Firmware](firmware.md)
 
 # Wiring
 

@@ -2,7 +2,7 @@
 title: Firmware
 ---
 
-[← Home](README.md) · [Parts](parts.md) · [Wiring](wiring.md) · **Firmware**
+[← Home](README.md) · [Parts](parts.md) · [Testing](testing.md) · [Wiring](wiring.md) · **Firmware**
 
 # Firmware (ESPHome)
 

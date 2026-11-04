@@ -3,7 +3,7 @@ title: VINDRIKTNING+
 permalink: /
 ---
 
-**Home** · [Parts](parts.md) · [Wiring](wiring.md) · [Firmware](firmware.md)
+**Home** · [Parts](parts.md) · [Testing](testing.md) · [Wiring](wiring.md) · [Firmware](firmware.md)
 
 # VINDRIKTNING+
 
@@ -31,8 +31,9 @@ Turn an **IKEA VINDRIKTNING** PM2.5 sensor into a eight-reading Home Assistant a
 ## Pages
 
 1. **[Parts list](parts.md)**: what to buy, where, and why, with cheaper and nicer options.
-2. **[Wiring](wiring.md)**: pin map, power, signal levels, placement inside the case.
-3. **[Firmware](firmware.md)**: ESPHome config, calibration, burn-in, HA automation ideas.
+2. **[Part testing](testing.md)**: quick pass/fail checks for each part as it arrives, so duds go back before the return window closes.
+3. **[Wiring](wiring.md)**: pin map, power, signal levels, placement inside the case.
+4. **[Firmware](firmware.md)**: ESPHome config, calibration, burn-in, HA automation ideas.
 
 ## Credits and references
 

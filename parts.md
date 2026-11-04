@@ -2,7 +2,7 @@
 title: Parts list
 ---
 
-[← Home](README.md) · **Parts** · [Wiring](wiring.md) · [Firmware](firmware.md)
+[← Home](README.md) · **Parts** · [Testing](testing.md) · [Wiring](wiring.md) · [Firmware](firmware.md)
 
 # Parts list
 
@@ -201,4 +201,4 @@ It's I²C at `0x76` (some boards use `0x77`), so it shares the bus with no clash
 
 ---
 
-*Next: [Wiring →](wiring.md)*
+*Next: [Part testing →](testing.md)*
