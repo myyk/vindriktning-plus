@@ -38,6 +38,7 @@ For opening the case and the general soldering approach, follow 3ative's Part 1 
 | VINDRIKTNING **GND** pad | **GND** | |
 | VINDRIKTNING **REST** pad | **GPIO20** | PM1006 TX line. Same pin 3ative uses. |
 | SCD40 VCC / SHT40 VCC / SGP41 VCC | **3V3** | Power **all I²C boards from 3.3 V** (reason below). |
+| BME280 VCC (optional) | **3V3** | Same bus as the others. |
 | All I²C GND | **GND** | |
 | All I²C SDA | **GPIO6** | Shared bus. |
 | All I²C SCL | **GPIO7** | Shared bus. |
@@ -45,7 +46,7 @@ For opening the case and the general soldering approach, follow 3ative's Part 1 
 | H₂S **GND** | **GND** | |
 | H₂S **A** (analog out) | **GPIO3** | ADC1 channel. Safe to use alongside Wi-Fi. |
 
-**I²C addresses:** SHT4x `0x44`, SGP4x `0x59`, SCD4x `0x62`. Nothing clashes, so all three share one bus.
+**I²C addresses:** SHT4x `0x44`, SGP4x `0x59`, SCD4x `0x62`, BME280 `0x76` (or `0x77`). Nothing clashes, so all four share one bus. The optional BME280 wires exactly like the other I²C boards: 3V3, GND, SDA→GPIO6, SCL→GPIO7.
 
 **Pins to avoid:** GPIO2, GPIO8 and GPIO9 are ESP32-C3 **strapping pins**. GPIO8 is also the blue LED and GPIO9 the BOOT button. Anything pulling on them at power-up can stop the board from booting. Some guides put the PM1006 on GPIO8; don't. **Spare pins** for later sensors: GPIO0, GPIO1, GPIO4 (analog-capable), plus GPIO5 and GPIO10.
 
@@ -80,8 +81,9 @@ The case is small and warm, and the PM1006 and its fan take up most of it. Rules
 1. **Sensors go in the airflow.** The SCD40, SGP41 and H₂S want room air, so mount them against the inside of the **back grille**, where the fan pulls air through. Don't seal them in a dead pocket.
 2. **Keep the SHT40 as far as possible from the ESP32 and the SCD40.** Both make heat, and every degree they add shows up as a "too warm, too dry" room. If you can, put the SHT40 right at the intake grille, or on a short lead just *outside* the case.
 3. **The ESP32 goes low and away from the sensors.** The bottom of the case is a common spot.
-4. **Don't cover the SCD40's white membrane or the SGP41's opening** with tape or glue.
-5. Use foam tape to keep boards from shorting against each other. Kapton tape on the back of the SuperMini helps.
+4. **The BME280 can go anywhere.** Pressure isn't affected by heat or airflow, so tuck it in wherever there's room.
+5. **Don't cover the SCD40's white membrane or the SGP41's opening** with tape or glue.
+6. Use foam tape to keep boards from shorting against each other. Kapton tape on the back of the SuperMini helps.
 
 ## Flashing tip
 

@@ -6,7 +6,7 @@ title: VINDRIKTNING+
 
 # VINDRIKTNING+
 
-Turn an **IKEA VINDRIKTNING** PM2.5 sensor into a seven-reading Home Assistant air-quality node, using an **ESP32-C3 SuperMini** and three small Sensirion sensors plus an optional MEMS gas sensor. It all fits inside the original case.
+Turn an **IKEA VINDRIKTNING** PM2.5 sensor into a eight-reading Home Assistant air-quality node, using an **ESP32-C3 SuperMini** and three small Sensirion sensors plus an optional MEMS gas sensor. It all fits inside the original case.
 
 | Reading | Sensor | Approx. cost |
 |---|---|---|
@@ -15,6 +15,7 @@ Turn an **IKEA VINDRIKTNING** PM2.5 sensor into a seven-reading Home Assistant a
 | Temperature / humidity | Sensirion **SHT40** | $1–3 |
 | VOC index + NOx index | Sensirion **SGP41** | $4–8 |
 | H₂S / sulfur odour (qualitative) | DFRobot Fermion MEMS **H₂S** | ~$7 |
+| Barometric pressure (optional) | Bosch **BME280** | $2–4 |
 | Brain + Wi-Fi | **ESP32-C3 SuperMini** | $2–4 |
 
 **About US$30–45 per unit** on top of the VINDRIKTNING, with most parts from AliExpress. Details, alternatives and buying tips are on the [parts page](parts.md).

@@ -1,0 +1,24 @@
+# Optional BME280 add-on: barometric pressure, also fed to the SCD40 for
+# pressure compensation. Its T/RH are kept internal (the SHT40 is better).
+# Remove the `packages:` line in vindriktning-plus.yaml if you don't fit one.
+sensor:
+  - platform: bme280_i2c
+    address: 0x76          # some boards are 0x77 - check the I2C scan log
+    update_interval: 60s
+    iir_filter: 16x
+    pressure:
+      name: Pressure
+      id: bme_pressure
+      oversampling: 4x
+    temperature:
+      name: BME280 Temperature
+      internal: true
+      oversampling: 1x
+    humidity:
+      name: BME280 Humidity
+      internal: true
+      oversampling: 1x
+
+  # Feed live pressure to the SCD40 (extends the scd4x entry in the main file).
+  - id: !extend scd40
+    ambient_pressure_compensation_source: bme_pressure

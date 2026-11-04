@@ -26,10 +26,11 @@ Prices are rough street prices as of **October 2026**, in USD unless marked S$. 
 | 4 | Temp / RH | **SHT40** module (SHT45 optional) | $1–3 | [AliExpress](https://www.aliexpress.com/w/wholesale-sht40-module.html) · [Shopee](https://shopee.sg/search?keyword=sht40) |
 | 5 | VOC (+NOx) | **SGP41** module (SGP40 if cheaper) | $4–8 | [AliExpress](https://www.aliexpress.com/w/wholesale-sgp41-module.html) · [Shopee](https://shopee.sg/search?keyword=sgp41) |
 | 6 | H₂S / sulfur odour | DFRobot Fermion MEMS H₂S (SEN0568) | S$9.45 | [element14 SG](https://sg.element14.com/dfrobot/sen0568/breakout-kit-mems-h2s-sensor-uno/dp/4733258) |
-| 7 | Misc | wire, resistors, foam tape, heat-shrink | ~$3 | see [below](#7-small-stuff) |
-| 8 | Power | 5 V USB-C adapter, ≥1 A | ~$3–5 | (any phone charger) |
+| 7 | Pressure (optional) | **BME280** module | $2–4 | [AliExpress](https://www.aliexpress.com/w/wholesale-bme280-module.html) · [Shopee](https://shopee.sg/search?keyword=bme280) |
+| 8 | Misc | wire, resistors, foam tape, heat-shrink | ~$3 | see [below](#8-small-stuff) |
+| 9 | Power | 5 V USB-C adapter, ≥1 A | ~$3–5 | (any phone charger) |
 
-**Total, excluding the VINDRIKTNING: about US$30–45 per unit.** The SCD40 accounts for roughly half of that.
+**Total, excluding the VINDRIKTNING: about US$30–45 per unit** (add $2–4 for the optional BME280). The SCD40 accounts for roughly half of that.
 
 ### If you're building several
 
@@ -97,7 +98,7 @@ If you'd rather not gamble on one unit, Adafruit's SCD-40 and Sensirion's own bo
 | **SHT40** (pick) | $1–3 | ±0.2 °C, ±1.8 %RH | Best value. Inside a warm plastic case the error comes from heat, not the sensor, so a better chip doesn't help much. |
 | SHT41 | $2–4 | Same typical, tighter worst case | Buy it instead if it's the same price. |
 | SHT45 | $4–8 | ±0.1 °C, ±1.0 %RH | Only worth it if you also mount it *outside* the case on a short cable. |
-| AHT20 / BME280 | $1–3 | Worse | Skip. You'd only take the BME280 for barometric pressure, which you didn't ask for. |
+| AHT20 / BME280 | $1–3 | Worse (±1 °C, ±3 %RH) | Not as a replacement. The BME280 is added below for pressure only. |
 
 **Buying tips**
 
@@ -152,7 +153,30 @@ If you'd rather not gamble on one unit, Adafruit's SCD-40 and Sensirion's own bo
 
 ---
 
-## 7. Small stuff
+## 7. Pressure (optional): Bosch BME280
+
+**Why it's optional:** The SHT40 is better at temperature and humidity, so this isn't a swap. What the BME280 adds is **barometric pressure**, for two things:
+
+1. **SCD40 pressure compensation.** CO₂ sensors read slightly differently as air pressure changes. The firmware feeds the BME280's live reading into the SCD40 automatically. Near sea level in Singapore the correction is small, but it's free once the part is fitted.
+2. **A pressure entity in Home Assistant**, for weather trends or just curiosity.
+
+It's I²C at `0x76` (some boards use `0x77`), so it shares the bus with no clashes.
+
+| Option | Price | Verdict |
+|---|---|---|
+| **BME280 module, 3.3 V version** (pick) | $2–4 | The common purple GY-BME280 boards. Pick the **3.3 V** variant (no regulator), which is smaller and has no 5 V pull-ups. |
+| BMP280 | $1–2 | Pressure only, which is all we need here, but ESPHome uses a different platform (`bmp280_i2c`). If you buy this, change the platform line and delete the `humidity:` block. |
+| BME680 / BME688 | $8–15 | Adds a gas sensor you don't need with the SGP41. Skip. |
+
+**Watch for mislabels:** Many "BME280" listings ship a **BMP280**, which has no humidity sensor. The chip packages look similar: the BME280 is square and the BMP280 is slightly rectangular. If ESPHome logs a wrong chip ID error, that's what you got. It still works for pressure: switch the platform to `bmp280_i2c` and delete the `humidity:` block.
+
+**If you skip it:** Delete the `bme280: !include optional-bme280.yaml` line in the firmware and everything else works unchanged.
+
+**Links:** [AliExpress BME280](https://www.aliexpress.com/w/wholesale-bme280-3.3v-module.html) · [Shopee](https://shopee.sg/search?keyword=bme280)
+
+---
+
+## 8. Small stuff
 
 | Item | Notes | Link |
 |---|---|---|

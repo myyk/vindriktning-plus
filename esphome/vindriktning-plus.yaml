@@ -1,6 +1,7 @@
 # VINDRIKTNING+  —  IKEA VINDRIKTNING + ESP32-C3 SuperMini
 # PM2.5 (stock PM1006) + CO2 (SCD40) + Temp/RH (SHT40) + VOC/NOx index (SGP41)
 # + H2S / sulfur-odour indicator (DFRobot Fermion MEMS H2S, analog)
+# + optional BME280 for barometric pressure (see optional-bme280.yaml)
 #
 # Based on 3ative's Ikea_v2_esp32_upgrade.yaml (Feb 2026), updated for the
 # sensors in this build. Copy secrets.yaml.example -> secrets.yaml first.
@@ -8,6 +9,10 @@
 substitutions:
   name: aq-living-room
   friendly_name: AQ Living Room
+
+# Optional add-ons. Delete a line if you don't fit that sensor.
+packages:
+  bme280: !include optional-bme280.yaml
 
 esphome:
   name: ${name}
@@ -55,7 +60,8 @@ uart:
     rx_pin: GPIO20
     baud_rate: 9600
 
-# One shared I2C bus. Addresses: SHT4x 0x44, SGP4x 0x59, SCD4x 0x62 (no clashes).
+# One shared I2C bus. Addresses: SHT4x 0x44, SGP4x 0x59, SCD4x 0x62,
+# BME280 0x76/0x77 (no clashes).
 i2c:
   id: bus_a
   sda: GPIO6
@@ -95,6 +101,7 @@ sensor:
 
   # SCD40 - real (photoacoustic NDIR) CO2
   - platform: scd4x
+    id: scd40
     address: 0x62
     update_interval: 30s
     automatic_self_calibration: true   # needs regular fresh air (~420 ppm)
