@@ -1,5 +1,6 @@
 ---
 title: VINDRIKTNING+
+permalink: /
 ---
 
 **Home** · [Parts](parts.md) · [Wiring](wiring.md) · [Firmware](firmware.md)
