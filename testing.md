@@ -80,7 +80,7 @@ Right after boot, the log prints the I²C scan:
 | [ESP32-C3 SuperMini](#esp32-c3-supermini) | 5 min | Shows up over USB, flashes, LED blinks, joins Wi-Fi |
 | [SHT41](#sht41) | 10 min | Within ~1 °C of a reference; RH jumps when you breathe on it |
 | [SCD40](#scd40) | 15 min | ~420–480 ppm by a window; >1000 ppm when you breathe on it, then recovers |
-| [SGP41](#sgp41) | 10 min | "Self-test complete" in log; VOC index jumps with hand sanitiser |
+| [SGP41](#sgp41) | 10 min | "Self-test complete" and no "SGP41 required for NOx" in log; VOC index jumps with hand sanitiser |
 | [BME280](#bme280-optional) | 5 min | No "Wrong chip ID"; pressure matches today's weather, adjusted for your floor |
 | [MEMS H₂S](#mems-h2s-sensor) | 15 min | Voltage settles after warm-up; rises near a boiled egg or alcohol |
 | [VINDRIKTNING](#vindriktning) | 10 min | PM2.5 readings arrive about every 20–30 s; spike near a blown-out match |
@@ -136,14 +136,15 @@ Also covers the SGP40. Needs the SHT41 on the bus for compensation. Without it, 
 
 1. **Scan:** `0x59` is present.
 2. **Self-test:** in the log, about a second after boot, look for **`Self-test complete`**. **`Self-test failed`** means a defective sensor. Return it.
-3. **Settling:** leave it **5 minutes**. The VOC index starts near 0 and climbs to around **100**, which means normal air for this room. The NOx index sits near **1**.
-4. **VOC response:**
+3. **Is it really an SGP41?** If the log also says **`SGP41 required for NOx, disabling NOx sensor`**, the board carries an **SGP40** (VOC only). That's a mislabelled item: open a dispute, or keep it as an SGP40 if the refund isn't worth the hassle. Very cheap "SGP41" listings are where this tends to happen.
+4. **Settling:** leave it **5 minutes**. The VOC index starts near 0 and climbs to around **100**, which means normal air for this room. The NOx index sits near **1**.
+5. **VOC response:**
    1. Put a drop of hand sanitiser or isopropyl alcohol on a tissue and hold it about 10 cm away.
    2. The VOC index should jump well above 100, often to 300–500, within 30 seconds.
    3. Take the tissue away; the index should decay over the next several minutes.
-5. **NOx response (optional, SGP41 only):** striking a match near it, or running a gas stove nearby, should bump the NOx index above 1. A NOx index that never moves isn't by itself a reason to return the part, since clean homes really do sit at 1.
+6. **NOx response (optional, SGP41 only):** striking a match near it, or running a gas stove nearby, should bump the NOx index above 1. A NOx index that never moves isn't by itself a reason to return the part, since clean homes really do sit at 1.
 
-**Return it if:** it fails the self-test, isn't on the bus, or the VOC index shows no reaction to alcohol at all after the 5-minute settle.
+**Return it if:** it fails the self-test, turns out to be an SGP40 sold as an SGP41, isn't on the bus, or the VOC index shows no reaction to alcohol at all after the 5-minute settle.
 
 ## BME280 (optional)
 
