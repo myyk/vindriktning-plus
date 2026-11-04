@@ -22,9 +22,9 @@ Prices are rough street prices as of **October 2026**, in USD unless marked S$. 
 |---|------|------|---------------|-----|
 | 1 | Base unit | IKEA VINDRIKTNING | (you have it) | [IKEA SG](https://www.ikea.com/sg/en/search/?q=vindriktning) |
 | 2 | Microcontroller | ESP32-C3 SuperMini | $2–4 | [AliExpress](https://www.aliexpress.com/w/wholesale-esp32-c3-supermini.html) · [Shopee](https://shopee.sg/search?keyword=esp32%20c3%20super%20mini) |
-| 3 | CO₂ | **SCD40** module | $12–20 | [AliExpress](https://www.aliexpress.com/w/wholesale-scd40-module.html) · [Shopee](https://shopee.sg/search?keyword=scd40) |
+| 3 | CO₂ | **SCD40** module | $10–20 | [AliExpress](https://www.aliexpress.com/w/wholesale-scd40-module.html) · [Shopee](https://shopee.sg/search?keyword=scd40) |
 | 4 | Temp / RH | **SHT41** module (SHT45 optional) | $2–4 | [AliExpress](https://www.aliexpress.com/w/wholesale-sht41-module.html) · [Shopee](https://shopee.sg/search?keyword=sht41) |
-| 5 | VOC (+NOx) | **SGP41** module (SGP40 if cheaper) | $4–8 | [AliExpress](https://www.aliexpress.com/w/wholesale-sgp41-module.html) · [Shopee](https://shopee.sg/search?keyword=sgp41) |
+| 5 | VOC (+NOx) | **SGP41** module (SGP40 if cheaper) | $5–10 | [AliExpress](https://www.aliexpress.com/w/wholesale-sgp41-module.html) · [Shopee](https://shopee.sg/search?keyword=sgp41) |
 | 6 | H₂S / sulfur odour | DFRobot Fermion MEMS H₂S (SEN0568) | S$9.45 | [element14 SG](https://sg.element14.com/dfrobot/sen0568/breakout-kit-mems-h2s-sensor-uno/dp/4733258) |
 | 7 | Pressure (optional) | **BME280** module | $2–4 | [AliExpress](https://www.aliexpress.com/w/wholesale-bme280-module.html) · [Shopee](https://shopee.sg/search?keyword=bme280) |
 | 8 | Misc | wire, resistors, foam tape, heat-shrink | ~$3 | see [below](#8-small-stuff) |
@@ -37,6 +37,28 @@ Prices are rough street prices as of **October 2026**, in USD unless marked S$. 
 - ESP32-C3 SuperMinis come cheapest in 3-, 5- or 10-packs. Buy spares, since quality varies between batches.
 - SHT41 modules are cheap enough to buy 5 or 10 at a time.
 - Order all the SCD40s from one seller, so you can test one and return the batch if it's bad.
+
+### Reference order (November 2026)
+
+A real order for **three units** placed from Singapore on AliExpress, with one H₂S sensor to try first. "Paid" is the order total, which includes Singapore's 9% GST and any shipping.
+
+| Part | Store | Variant chosen | Qty | Item price | Paid | Per unit, landed |
+|---|---|---|---|---|---|---|
+| SCD40 CO₂ module | Shenzhen Module Studio Co., Ltd Store | SCD40 Purple | 3 | S$12.05 | S$41.43 | **S$13.81** (≈US$10.40) |
+| SGP41 VOC/NOx module | Shenzhen Module Studio Co., Ltd Store | SGP41-No Pins | 3 | S$11.95 | S$39.08 | **S$13.03** (≈US$9.80) |
+| SHT41 temp/RH module | HZWDONE Store | SHT41 | 3 | S$2.15 | S$7.03 | **S$2.34** (≈US$1.75) |
+| DFRobot Fermion MEMS H₂S (SEN0568) | DFRobot Store (official) | H2S | 1 | S$7.42 | S$8.09 | **S$8.09** (≈US$6.10) |
+| 28 AWG silicone wire, 5 colours × 10 m | Beteno Connect Store | WHITE, 28AWG 5x10M | 1 | S$7.75 | S$8.45 | shared across all units |
+| **Total** | | | | | **S$104.08** | |
+
+**Per sensor node:** about **S$29** for CO₂ + temp/RH + VOC/NOx, or **S$37** with the H₂S sensor, plus a share of the wire. The ESP32-C3 SuperMini and VINDRIKTNING aren't included.
+
+Notes from this order:
+
+- **Choose the exact variant.** The SCD40 and SGP41 listings both bundle several boards (SCD40/SCD41, SGP40/SGP41) under one product. The search-page price is often a cheaper variant, not the one you want.
+- **"No Pins" means you solder the headers or wires yourself.** That's fine here, since everything gets wired into the case anyway.
+- **The SGP41 deliberately came from a mid-priced, well-reviewed seller.** Much cheaper "SGP41" listings (around S$2) are often an SGP40 or a reject chip; see [Part testing](testing.md#sgp41) for how to tell.
+- Order IDs are left out. Status at time of writing: ordered, not yet tested. Results will be added once parts arrive.
 
 ---
 
@@ -72,12 +94,12 @@ The case, fan and PM2.5 sensor (a Cubic PM1006) are all reused. IKEA's own contr
 
 | Option | Price | Accuracy | Notes |
 |---|---|---|---|
-| **SCD40 module** (pick) | $12–20 | ±(50 ppm + 5%) in 400–2000 ppm | Plenty for a home: you care about 600 vs 1200 ppm, not 612 vs 618. |
+| **SCD40 module** (pick) | $10–20 | ±(50 ppm + 5%) in 400–2000 ppm | Plenty for a home: you care about 600 vs 1200 ppm, not 612 vs 618. |
 | SCD41 module | $18–28 | Slightly tighter, specified to 5000 ppm, adds single-shot mode | Only worth it for battery builds. You're on USB power. |
 | SCD30 (what 3ative used) | $25–40 | Better | Larger and pricier. No reason to pick it for a new build. |
 | Senseair S8 / MH-Z19C | $15–25 | Good | Large NDIR blocks. They don't fit as easily in this case. |
 
-**Fakes and seconds:** A genuine SCD40 chip costs around **US$18 at qty 1** from authorized distributors. Modules listed well under ~$12 are often recycled, out-of-spec, or B-grade parts. At least one Dutch electronics forum has posted measurements showing fake SCD41s from AliExpress. You said "close enough is OK", so a mid-priced AliExpress module is a reasonable gamble. To protect yourself:
+**Fakes and seconds:** A genuine SCD40 chip costs around **US$18 at qty 1** from authorized distributors. Large Chinese module makers buy far cheaper in volume, so around US$10 for a whole module (as in the [reference order](#reference-order-november-2026)) is plausible. Modules much below that are often recycled, out-of-spec, or B-grade parts. At least one Dutch electronics forum has posted measurements showing fake SCD41s from AliExpress. For a home build where close enough is OK, a mid-priced AliExpress module from a well-reviewed seller is a reasonable gamble. To protect yourself:
 
 1. Buy from a seller with a lot of orders and photos of the actual board.
 2. When it arrives, check it **outdoors or by an open window**. It should read roughly 420–480 ppm after a few minutes. Breathe on it and it should jump past 1000 ppm, then come back down.
@@ -116,7 +138,7 @@ If you'd rather not gamble on one unit, Adafruit's SCD-40 and Sensirion's own bo
 
 | Option | Price | Verdict |
 |---|---|---|
-| **SGP41** (pick) | $4–8 | VOC **and** NOx index for about the same money. |
+| **SGP41** (pick) | $5–10 | VOC **and** NOx index for about the same money. Good sellers are around $9–10. Be wary of listings under ~$3. |
 | SGP40 | $3–7 | VOC only. Fine if it's noticeably cheaper. The firmware handles either one with no changes. |
 | SGP30 | $4–8 | **Skip.** It's being phased out, and the eCO₂ it reports is not CO₂. You have the SCD40 for that. |
 | ENS160 (+AHT21 combo) | $3–6 | Works, but its readings jump around more than Sensirion's algorithm. Not much cheaper. |
