@@ -49,9 +49,12 @@ A real order for **three units** placed from Singapore on AliExpress, with one H
 | SHT41 temp/RH module | HZWDONE Store | SHT41 | 3 | S$2.15 | S$7.03 | **S$2.34** (≈US$1.75) |
 | DFRobot Fermion MEMS H₂S (SEN0568) | DFRobot Store (official) | H2S | 1 | S$7.42 | S$8.09 | **S$8.09** (≈US$6.10) |
 | 28 AWG silicone wire, 5 colours × 10 m | Beteno Connect Store | WHITE, 28AWG 5x10M | 1 | S$7.75 | S$8.45 | shared across all units |
-| **Total** | | | | | **S$104.08** | |
+| **Total (this order)** | | | | | **S$104.08** | |
+| ESP32-C3 SuperMini, 20-pack *(bought earlier for another project)* | — | — | 20 | — | ¥440 (≈S$85) | **≈S$4.25** (¥22, ≈US$3.20) |
 
-**Per sensor node:** about **S$29** for CO₂ + temp/RH + VOC/NOx, or **S$37** with the H₂S sensor, plus a share of the wire. The ESP32-C3 SuperMini and VINDRIKTNING aren't included.
+**Per sensor node:** about **S$33** for an ESP32-C3 + CO₂ + temp/RH + VOC/NOx, or **S$41** with the H₂S sensor, plus a share of the wire. The VINDRIKTNING isn't included.
+
+The SuperMinis were a 20-pack bought in China for ¥440, shipping and taxes included. That's converted at about S$0.19 per yuan (late October 2026). Buying in bulk like this gets the per-board price down to around US$3, the low end of the usual range.
 
 Notes from this order:
 
