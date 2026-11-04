@@ -64,7 +64,7 @@ Right after boot, the log prints the I²C scan:
 
 | Address | Part |
 |---|---|
-| `0x44` | SHT40 |
+| `0x44` | SHT41 |
 | `0x59` | SGP41 / SGP40 |
 | `0x62` | SCD40 |
 | `0x76` or `0x77` | BME280 |
@@ -78,7 +78,7 @@ Right after boot, the log prints the I²C scan:
 | Part | Time | Pass if… |
 |---|---|---|
 | [ESP32-C3 SuperMini](#esp32-c3-supermini) | 5 min | Shows up over USB, flashes, LED blinks, joins Wi-Fi |
-| [SHT40](#sht40) | 10 min | Within ~1 °C of a reference; RH jumps when you breathe on it |
+| [SHT41](#sht41) | 10 min | Within ~1 °C of a reference; RH jumps when you breathe on it |
 | [SCD40](#scd40) | 15 min | ~420–480 ppm by a window; >1000 ppm when you breathe on it, then recovers |
 | [SGP41](#sgp41) | 10 min | "Self-test complete" in log; VOC index jumps with hand sanitiser |
 | [BME280](#bme280-optional) | 5 min | No "Wrong chip ID"; pressure matches today's weather, adjusted for your floor |
@@ -101,9 +101,9 @@ Test **every board in a multi-pack**, because quality varies between boards in t
 
 **Return it if:** it never shows up over USB with a known-good data cable, won't flash in download mode, or can't hold Wi-Fi even at reduced power when other boards from the same pack can.
 
-## SHT40
+## SHT41
 
-Also covers the SHT41 and SHT45.
+Also covers the SHT40 and SHT45.
 
 1. **Scan:** `0x44` is present.
 2. **Sanity:** after about 5 minutes the temperature should be within roughly **±1 °C** of your reference, and humidity within roughly **±5 %RH** of any other hygrometer you have. Keep it away from the SuperMini's regulator on the breadboard, which gets warm.
@@ -132,7 +132,7 @@ The most expensive part, and the one most likely to be [B-grade or fake](parts.m
 
 ## SGP41
 
-Also covers the SGP40. Needs the SHT40 on the bus for compensation. Without it, the test still runs, with slightly worse numbers.
+Also covers the SGP40. Needs the SHT41 on the bus for compensation. Without it, the test still runs, with slightly worse numbers.
 
 1. **Scan:** `0x59` is present.
 2. **Self-test:** in the log, about a second after boot, look for **`Self-test complete`**. **`Self-test failed`** means a defective sensor. Return it.
@@ -154,7 +154,7 @@ Also covers the SGP40. Needs the SHT40 on the bus for compensation. Without it, 
    2. Subtract about **0.12 hPa per metre** you are above sea level. For example, a 10th-floor flat about 30 m up reads roughly 3.5 hPa lower.
    3. The sensor should be within about **±2 hPa** of that.
 4. **Lift test (optional):** carry it up or down a few floors in the lift. Pressure should move by about 0.35 hPa per floor.
-5. **Humidity:** a real BME280 reports humidity. It should roughly agree with the SHT40, within about 5 %RH.
+5. **Humidity:** a real BME280 reports humidity. It should roughly agree with the SHT41, within about 5 %RH.
 
 **Return it if:** it isn't on the bus, it's a BMP280 sold as a BME280 (unless you choose to keep it), or pressure is way off (more than ~5 hPa) or frozen.
 

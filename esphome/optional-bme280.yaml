@@ -1,5 +1,5 @@
 # Optional BME280 add-on: barometric pressure, also fed to the SCD40 for
-# pressure compensation. Its T/RH are kept internal (the SHT40 is better).
+# pressure compensation. Its T/RH are kept internal (the SHT41 is better).
 # Remove the `packages:` line in vindriktning-plus.yaml if you don't fit one.
 sensor:
   - platform: bme280_i2c

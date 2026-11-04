@@ -74,15 +74,15 @@ sensor:
     name: Uptime
     update_interval: 10s
 
-  # SHT40 / SHT41 / SHT45
+  # SHT41 (also works for SHT40 / SHT45)
   - platform: sht4x
     address: 0x44
     update_interval: 5s
     temperature:
-      name: SHT40 Temperature
+      name: SHT41 Temperature
       id: sht_temp
     humidity:
-      name: SHT40 Humidity
+      name: SHT41 Humidity
       id: sht_rh
 
   # SCD40 / SCD41. No offsets or calibration here on purpose: we want to see

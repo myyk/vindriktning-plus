@@ -23,7 +23,7 @@ Prices are rough street prices as of **October 2026**, in USD unless marked S$. 
 | 1 | Base unit | IKEA VINDRIKTNING | (you have it) | [IKEA SG](https://www.ikea.com/sg/en/search/?q=vindriktning) |
 | 2 | Microcontroller | ESP32-C3 SuperMini | $2–4 | [AliExpress](https://www.aliexpress.com/w/wholesale-esp32-c3-supermini.html) · [Shopee](https://shopee.sg/search?keyword=esp32%20c3%20super%20mini) |
 | 3 | CO₂ | **SCD40** module | $12–20 | [AliExpress](https://www.aliexpress.com/w/wholesale-scd40-module.html) · [Shopee](https://shopee.sg/search?keyword=scd40) |
-| 4 | Temp / RH | **SHT40** module (SHT45 optional) | $1–3 | [AliExpress](https://www.aliexpress.com/w/wholesale-sht40-module.html) · [Shopee](https://shopee.sg/search?keyword=sht40) |
+| 4 | Temp / RH | **SHT41** module (SHT45 optional) | $2–4 | [AliExpress](https://www.aliexpress.com/w/wholesale-sht41-module.html) · [Shopee](https://shopee.sg/search?keyword=sht41) |
 | 5 | VOC (+NOx) | **SGP41** module (SGP40 if cheaper) | $4–8 | [AliExpress](https://www.aliexpress.com/w/wholesale-sgp41-module.html) · [Shopee](https://shopee.sg/search?keyword=sgp41) |
 | 6 | H₂S / sulfur odour | DFRobot Fermion MEMS H₂S (SEN0568) | S$9.45 | [element14 SG](https://sg.element14.com/dfrobot/sen0568/breakout-kit-mems-h2s-sensor-uno/dp/4733258) |
 | 7 | Pressure (optional) | **BME280** module | $2–4 | [AliExpress](https://www.aliexpress.com/w/wholesale-bme280-module.html) · [Shopee](https://shopee.sg/search?keyword=bme280) |
@@ -35,7 +35,7 @@ Prices are rough street prices as of **October 2026**, in USD unless marked S$. 
 ### If you're building several
 
 - ESP32-C3 SuperMinis come cheapest in 3-, 5- or 10-packs. Buy spares, since quality varies between batches.
-- SHT40 modules are cheap enough to buy 5 or 10 at a time.
+- SHT41 modules are cheap enough to buy 5 or 10 at a time.
 - Order all the SCD40s from one seller, so you can test one and return the batch if it's bad.
 
 ---
@@ -89,14 +89,14 @@ If you'd rather not gamble on one unit, Adafruit's SCD-40 and Sensirion's own bo
 
 ---
 
-## 4. Temperature & humidity: Sensirion SHT40 (or SHT45)
+## 4. Temperature & humidity: Sensirion SHT41 (or SHT45)
 
 **Why:** The SCD40 also reports temperature and humidity, but it heats itself, so those readings drift. A separate SHT4x gives you clean room T/RH. It's also the compensation input the SGP41 needs, and it costs almost nothing. It's I²C at `0x44`.
 
 | Option | Price | Typical accuracy | Verdict |
 |---|---|---|---|
-| **SHT40** (pick) | $1–3 | ±0.2 °C, ±1.8 %RH | Best value. Inside a warm plastic case the error comes from heat, not the sensor, so a better chip doesn't help much. |
-| SHT41 | $2–4 | Same typical, tighter worst case | Buy it instead if it's the same price. |
+| **SHT41** (pick) | $2–4 | ±0.2 °C, ±1.8 %RH typical; about ±2 %RH typical across the **full 0–100 %RH** range, ±3 % max | Usually only about $0.50 more than the SHT40, and it stays accurate at high humidity. Singapore indoor air often sits at 70–90 %RH, exactly where the SHT40 gets worse. |
+| SHT40 | $1–3 | Same typical in the mid-range, but up to ±3 %RH typical / ±6 % max towards the extremes | Fine in drier climates. Not worth the saving here. |
 | SHT45 | $4–8 | ±0.1 °C, ±1.0 %RH | Only worth it if you also mount it *outside* the case on a short cable. |
 | AHT20 / BME280 | $1–3 | Worse (±1 °C, ±3 %RH) | Not as a replacement. The BME280 is added below for pressure only. |
 
@@ -106,7 +106,7 @@ If you'd rather not gamble on one unit, Adafruit's SCD-40 and Sensirion's own bo
 - A board with a **PTFE membrane** over the chip is nice in a dusty case. It's optional.
 - Get the **3.3 V-only** boards (no regulator) if you can find them. They're smaller and run cooler.
 
-**Links:** [AliExpress SHT40](https://www.aliexpress.com/w/wholesale-sht40-module.html) · [AliExpress SHT45](https://www.aliexpress.com/w/wholesale-sht45-module.html) · [Shopee](https://shopee.sg/search?keyword=sht40)
+**Links:** [AliExpress SHT41](https://www.aliexpress.com/w/wholesale-sht41-module.html) · [AliExpress SHT45](https://www.aliexpress.com/w/wholesale-sht45-module.html) · [Shopee](https://shopee.sg/search?keyword=sht41)
 
 ---
 
@@ -124,7 +124,7 @@ If you'd rather not gamble on one unit, Adafruit's SCD-40 and Sensirion's own bo
 
 **Notes**
 
-- The SGP4x needs temperature and humidity compensation to be accurate. That's why the SHT40 is in this build.
+- The SGP4x needs temperature and humidity compensation to be accurate. That's why the SHT41 is in this build.
 - Its gas-index algorithm runs at 1 Hz on the ESP itself, and ESPHome handles that automatically. Expect the index to settle after about **12–24 h** on first power-up.
 - Its heater draws a few mA all the time. That's irrelevant on USB power.
 
@@ -155,7 +155,7 @@ If you'd rather not gamble on one unit, Adafruit's SCD-40 and Sensirion's own bo
 
 ## 7. Pressure (optional): Bosch BME280
 
-**Why it's optional:** The SHT40 is better at temperature and humidity, so this isn't a swap. What the BME280 adds is **barometric pressure**, for two things:
+**Why it's optional:** The SHT41 is better at temperature and humidity, so this isn't a swap. What the BME280 adds is **barometric pressure**, for two things:
 
 1. **SCD40 pressure compensation.** CO₂ sensors read slightly differently as air pressure changes. The firmware feeds the BME280's live reading into the SCD40 automatically. Near sea level in Singapore the correction is small, but it's free once the part is fitted.
 2. **A pressure entity in Home Assistant**, for weather trends or just curiosity.
@@ -194,9 +194,9 @@ It's I²C at `0x76` (some boards use `0x77`), so it shares the bus with no clash
 
 | Variant | Change | Saves / costs |
 |---|---|---|
-| **Budget** | Drop the SHT40 and use the SCD40's own T/RH, with an offset, for display and SGP compensation | −$2. Temperature will read a bit warmer and less steady. |
+| **Budget** | Drop the SHT41 and use the SCD40's own T/RH, with an offset, for display and SGP compensation | −$3. Temperature will read a bit warmer and less steady. |
 | **Budget+** | Drop the H₂S sensor | −$7. It's the least useful sensor for general air quality. |
-| **No soldering on the sensors** | Pick SCD40/SHT40/SGP41 boards with **Qwiic/STEMMA-QT (JST-SH 4-pin)** connectors and daisy-chain them with JST-SH cables | +$3–8 total. Much tidier inside the case. |
+| **No soldering on the sensors** | Pick SCD40/SHT41/SGP41 boards with **Qwiic/STEMMA-QT (JST-SH 4-pin)** connectors and daisy-chain them with JST-SH cables | +$3–8 total. Much tidier inside the case. |
 | **"I don't want to build it"** | Off-the-shelf ESPHome air-quality units (e.g. Apollo AIR-1) | ~$80–150. Defeats the purpose, but it's there. |
 
 ---

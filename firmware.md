@@ -19,8 +19,8 @@ title: Firmware
 | 3ative v2 | This build | Why |
 |---|---|---|
 | SCD30 (CO₂/T/RH) | **SCD40** (`scd4x`) | Smaller and cheaper. |
-| BME280 (T/RH/pressure) | **SHT40** (`sht4x`) for T/RH, plus an **optional BME280** for pressure only | The SHT40 is better at T/RH. The BME280's pressure also feeds the SCD40 (`ambient_pressure_compensation_source`). |
-| — | **SGP41** (`sgp4x`) VOC + NOx index | New, compensated by the SHT40. |
+| BME280 (T/RH/pressure) | **SHT41** (`sht4x`) for T/RH, plus an **optional BME280** for pressure only | The SHT41 is better at T/RH. The BME280's pressure also feeds the SCD40 (`ambient_pressure_compensation_source`). |
+| — | **SGP41** (`sgp4x`) VOC + NOx index | New, compensated by the SHT41. |
 | — | **MEMS H₂S** on `adc` | New. Raw voltage plus a "relative to clean air" ratio. |
 | Arduino framework | **ESP-IDF** framework | ESPHome's recommended framework for the C3. |
 | Fan binary sensor on GPIO8 | removed | GPIO8 is a strapping pin, and the signal needs level shifting anyway. |
@@ -41,7 +41,7 @@ Also updated for current ESPHome: the SGP4x outputs are now `voc_index` / `nox_i
 | Sensor | What to do |
 |---|---|
 | **SCD40 CO₂** | Automatic self-calibration is **on**. It assumes the room sees fresh air (~420 ppm) at least once every week or so, which a normal ventilated room does. For a quick start, put the unit by an open window for about 5 min, then press **CO2 Force Calibration** in HA (the reference defaults to 420 ppm). |
-| **SHT40 temperature** | The case gets warm. Leave the unit next to a trusted thermometer for a day, then adjust the `offset: -1.0` filter under `sht4x`. Humidity is affected too: warmer air reads drier. If RH reads low compared with a reference, reducing the heat source (moving the SHT40) is better than offsetting it. |
+| **SHT41 temperature** | The case gets warm. Leave the unit next to a trusted thermometer for a day, then adjust the `offset: -1.0` filter under `sht4x`. Humidity is affected too: warmer air reads drier. If RH reads low compared with a reference, reducing the heat source (moving the SHT41) is better than offsetting it. |
 | **SGP41 VOC/NOx** | Nothing to do. The index learns its baseline over the first **~12–24 h**. Readings before that are not meaningful. |
 | **H₂S** | Let it **burn in for 24–48 h** when new. Then, with the room smelling normal, press **H2S Set Baseline Now**. From then on, **H2S Relative** reads about 1.0 in clean air and rises with sulfur-type smells. Treat it as an event detector, not a ppm meter. |
 

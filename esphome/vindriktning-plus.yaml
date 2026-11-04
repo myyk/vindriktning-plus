@@ -1,5 +1,5 @@
 # VINDRIKTNING+  —  IKEA VINDRIKTNING + ESP32-C3 SuperMini
-# PM2.5 (stock PM1006) + CO2 (SCD40) + Temp/RH (SHT40) + VOC/NOx index (SGP41)
+# PM2.5 (stock PM1006) + CO2 (SCD40) + Temp/RH (SHT41) + VOC/NOx index (SGP41)
 # + H2S / sulfur-odour indicator (DFRobot Fermion MEMS H2S, analog)
 # + optional BME280 for barometric pressure (see optional-bme280.yaml)
 #
@@ -83,7 +83,7 @@ sensor:
             window_size: 6
             send_every: 3
 
-  # SHT40 - primary room temperature & humidity, also feeds SGP41 compensation
+  # SHT41 (or SHT40/SHT45) - primary room temperature & humidity, also feeds SGP41 compensation
   - platform: sht4x
     address: 0x44
     precision: High

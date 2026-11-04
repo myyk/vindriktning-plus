@@ -13,7 +13,7 @@ Turn an **IKEA VINDRIKTNING** PM2.5 sensor into a eight-reading Home Assistant a
 |---|---|---|
 | PM2.5 | Stock PM1006 (already inside) | — |
 | CO₂ (real, NDIR) | Sensirion **SCD40** | $12–20 |
-| Temperature / humidity | Sensirion **SHT40** | $1–3 |
+| Temperature / humidity | Sensirion **SHT41** | $2–4 |
 | VOC index + NOx index | Sensirion **SGP41** | $4–8 |
 | H₂S / sulfur odour (qualitative) | DFRobot Fermion MEMS **H₂S** | ~$7 |
 | Barometric pressure (optional) | Bosch **BME280** | $2–4 |

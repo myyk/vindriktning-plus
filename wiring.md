@@ -25,7 +25,7 @@ For opening the case and the general soldering approach, follow 3ative's Part 1 
                                  GPIO6 ──┼──┼─┬─┼──┼─┬─┼──┼─┐ │  │   SDA
                                  GPIO7 ──┼──┼─┼┬┼──┼─┼┬┼──┼─┼┐│  │   SCL
                                          │  │ │││  │ │││  │ │││  │
-                                       SCD40   SHT40   SGP41   H2S (VCC/GND)
+                                       SCD40   SHT41   SGP41   H2S (VCC/GND)
                                                                 │
                                  GPIO3 ─────────────────────────┘ (A out)
 ```
@@ -37,7 +37,7 @@ For opening the case and the general soldering approach, follow 3ative's Part 1 
 | VINDRIKTNING **+5V** pad | **5V** | Powers the ESP from the IKEA USB-C input. |
 | VINDRIKTNING **GND** pad | **GND** | |
 | VINDRIKTNING **REST** pad | **GPIO20** | PM1006 TX line. Same pin 3ative uses. |
-| SCD40 VCC / SHT40 VCC / SGP41 VCC | **3V3** | Power **all I²C boards from 3.3 V** (reason below). |
+| SCD40 VCC / SHT41 VCC / SGP41 VCC | **3V3** | Power **all I²C boards from 3.3 V** (reason below). |
 | BME280 VCC (optional) | **3V3** | Same bus as the others. |
 | All I²C GND | **GND** | |
 | All I²C SDA | **GPIO6** | Shared bus. |
@@ -79,7 +79,7 @@ Solder the resistors inline in the wire and cover them with heat-shrink.
 The case is small and warm, and the PM1006 and its fan take up most of it. Rules of thumb:
 
 1. **Sensors go in the airflow.** The SCD40, SGP41 and H₂S want room air, so mount them against the inside of the **back grille**, where the fan pulls air through. Don't seal them in a dead pocket.
-2. **Keep the SHT40 as far as possible from the ESP32 and the SCD40.** Both make heat, and every degree they add shows up as a "too warm, too dry" room. If you can, put the SHT40 right at the intake grille, or on a short lead just *outside* the case.
+2. **Keep the SHT41 as far as possible from the ESP32 and the SCD40.** Both make heat, and every degree they add shows up as a "too warm, too dry" room. If you can, put the SHT41 right at the intake grille, or on a short lead just *outside* the case.
 3. **The ESP32 goes low and away from the sensors.** The bottom of the case is a common spot.
 4. **The BME280 can go anywhere.** Pressure isn't affected by heat or airflow, so tuck it in wherever there's room.
 5. **Don't cover the SCD40's white membrane or the SGP41's opening** with tape or glue.
